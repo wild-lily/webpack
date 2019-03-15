@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-
+const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const ROOT_PATH = path.resolve(__dirname);
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
 const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
@@ -16,15 +16,19 @@ module.exports = {
         extensions: ['.js', '.jsx', '.json', '.scss', '.css', 'less']
     },
     module: {
-        rules: [{
-            test: /\.jsx?$/,
-            loader: 'babel-loader',
-            include: SRC_PATH,
-            exclude: path.resolve(ROOT_PATH, 'node_modules')
-        }]
+        rules: [
+            {
+                test: /\.jsx?$/,
+                loader: 'babel-loader',
+                include: SRC_PATH,
+                exclude: path.resolve(ROOT_PATH, 'node_modules')
+            }
+        ]
     },
-    plugins: [new webpack.DllReferencePlugin({
-        manifest: require(path.resolve(BUILD_PATH, 'lib', 'manifest.json')),
-        context: ROOT_PATH
-    })]
+    plugins: [
+        new webpack.DllReferencePlugin({
+            manifest: require(path.resolve(BUILD_PATH, 'lib', 'manifest.json')),
+            context: ROOT_PATH
+        })
+    ]
 };

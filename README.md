@@ -1,5 +1,5 @@
 ### 克隆仓库
-git clone git@github.com:yinhexidashuaibi/react-webpack-demo.git
+git clone git@github.com:yinhexidashuaibi/webpack.git
 
 ### 下载依赖
 npm install
