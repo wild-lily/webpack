@@ -1,14 +1,44 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
+const UglifyPlugin = require('uglifyjs-webpack-plugin');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.config.js');
 
 const ROOT_PATH = path.resolve(__dirname);
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
+const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 const devConfig = merge(baseConfig, {
     mode: 'development',
     devtool: 'eval-source-map',
+    module: {
+        rules: [{
+            test: /\.css$/,
+            include: SRC_PATH,
+            use: [
+                'style-loader', 'css-loader'
+            ]
+        },
+        {
+            test: /\.less$/,
+            use: [{
+                loader: 'style-loader'
+            },
+            {
+                loader: 'css-loader',
+                options: {
+                    sourceMap: true,
+                    modules: true,
+                    localIdentName: '[local]___[hash:base64:5]'
+                }
+            },
+            {
+                loader: 'less-loader'
+            }
+            ]
+        }
+        ]
+    },
     plugins: [
         new HtmlwebpackPlugin({
             title: 'react-webpack-demo',
@@ -17,7 +47,8 @@ const devConfig = merge(baseConfig, {
         }),
         new webpack.ProvidePlugin({
             $: 'jquery'
-        })
+        }),
+        new UglifyPlugin()
     ],
     devServer: {
         contentBase: path.resolve(ROOT_PATH, 'build'),
