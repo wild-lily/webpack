@@ -1,0 +1,50 @@
+{
+    "name": "react-webpack-demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dll": "rimraf build && webpack --config webpack.dll.config.js && npm run build:dev",
+        "dev": "webpack-dev-server --open --config webpack.dev.config.js",
+        "build:dev": "webpack --progress --config webpack.dev.config.js",
+        "build:test": "webpack --progress --config webpack.test.config.js",
+        "build:prod": "webpack --progress --config webpack.prod.config.js"
+    },
+    "keywords": [],
+    "author": "zhangfuling",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.3.4",
+        "@babel/plugin-proposal-class-properties": "^7.3.4",
+        "@babel/plugin-proposal-decorators": "^7.3.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
+        "@babel/plugin-transform-runtime": "^7.3.4",
+        "@babel/preset-env": "^7.3.4",
+        "@babel/preset-react": "^7.0.0",
+        "@babel/preset-stage-2": "^7.0.0",
+        "babel-loader": "^8.0.5",
+        "babel-preset-mobx": "^2.0.0",
+        "eslint": "^5.15.1",
+        "eslint-config-airbnb": "^17.1.0",
+        "eslint-loader": "^2.1.2",
+        "eslint-plugin-import": "^2.16.0",
+        "eslint-plugin-jsx-a11y": "^6.2.1",
+        "eslint-plugin-react": "^7.12.4",
+        "html-webpack-plugin": "^3.2.0",
+        "jquery": "^3.3.1",
+        "uglifyjs-webpack-plugin": "^2.1.2",
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.2.3",
+        "webpack-dev-server": "^3.2.1",
+        "webpack-merge": "^4.2.1"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.3.4",
+        "@babel/runtime-corejs2": "^7.3.4",
+        "mobx": "^5.9.0",
+        "mobx-react": "^5.4.3",
+        "react": "^16.8.4",
+        "react-dom": "^16.8.4",
+        "react-router": "^4.3.1"
+    }
+}
