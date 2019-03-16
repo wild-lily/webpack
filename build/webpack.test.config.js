@@ -3,11 +3,9 @@ const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.config.js');
-
-const ROOT_PATH = path.resolve(__dirname);
+const ROOT_PATH = path.resolve(__dirname, '..');
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
-const prodConfig = merge(baseConfig, {
-    mode: 'production',
+const testConfig = merge(baseConfig, {
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true
@@ -28,4 +26,4 @@ const prodConfig = merge(baseConfig, {
     ]
 });
 
-module.exports = prodConfig;
+module.exports = testConfig;
