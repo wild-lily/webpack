@@ -12,6 +12,7 @@ const vendors = [
     'mobx-react'
 ];
 
+// todo: 考虑一下 dll 是否需要区分 dev 和 prod 环境，如果需要，为什么需要？
 module.exports = {
     entry: {
         vendor: vendors

@@ -1,3 +1,5 @@
+// todo: 虽然加入了 eslint，但是 js 文件中并没有按照 eslint 的规则去书写
+
 module.exports = {
     "parserOptions": {
         "ecmaVersion": 7, // ECMAScript版本，7为ES7
