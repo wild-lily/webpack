@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App/index';
 
+// todo: 为什么使用 jq 的 ajax 方法，并没有引入 jq
 $.get('/api/config/list', {}, data => {
     console.log(data, 'DATA');
 });
