@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import React, {Component} from 'react';
+import {observer} from 'mobx-react';
 import State from './state';
 import style from './style.less';
 
@@ -11,12 +11,10 @@ class App extends Component {
     render() {
         return (
             <div className={style.box}>
-                <h1>{this.local.state.get_header}</h1>
-                <button
-                    onClick={() => {
-                        this.local.state.set_title();
-                    }}
-                >
+                <h1>{this.local.state.getHeader}</h1>
+                <button onClick={() => {
+                    this.local.state.setTitle();
+                }}>
                     change
                 </button>
             </div>

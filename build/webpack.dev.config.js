@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlwebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.config.js');
 const apiMocker = require('mocker-api');
@@ -10,16 +9,6 @@ const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 const devConfig = merge(baseConfig, {
     mode: 'development',
     devtool: 'eval-source-map',
-    plugins: [
-        new HtmlwebpackPlugin({
-            title: 'react-webpack-demo',
-            filename: 'index.html',
-            template: path.resolve(SRC_PATH, 'templates', 'index.html')
-        }),
-        new webpack.ProvidePlugin({
-            $: 'jquery'
-        })
-    ],
     devServer: {
         contentBase: DIST_PATH,
         port: 3000, // 本地服务器端口号

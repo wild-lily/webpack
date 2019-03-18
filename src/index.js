@@ -2,21 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App/index';
 
-$.get('/api/config/list', {}, data => {
-    console.log(data, 'DATA');
-});
-
-$.get('/api/user', {}, data => {
-    console.log('/api/user', data);
-});
-
 function Index() {
     return (
-        <div className="container">
+        <div className='container'>
             <App />
         </div>
     );
 }
+
 ReactDOM.render(<Index />, document.getElementById('app'));
 
 export default Index;
