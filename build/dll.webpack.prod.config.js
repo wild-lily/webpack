@@ -1,9 +1,13 @@
+/**
+ * @file dll.webpack.prod.config.js
+ * @author zhangfuling
+ */
 const path = require('path');
 const webpack = require('webpack');
-
 const ROOT_PATH = path.resolve(__dirname, '..');
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
 const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
+
 const vendors = [
     'react',
     'react-dom',
@@ -20,6 +24,10 @@ module.exports = {
         path: path.resolve(DIST_PATH, 'lib'),
         filename: '[name].dll.js',
         library: '[name]_lib'
+    },
+    mode: 'production',
+    module: {
+        rules: require('./loaders.dll')
     },
     plugins: [
         new webpack.DllPlugin({

@@ -9,7 +9,7 @@ export default class State {
 
     @computed
     get getHeader() {
-        return `${this.state.title} + zhangfuling`;
+        return `${this.state.title}zhangfuling1212`;
     }
 
     @action

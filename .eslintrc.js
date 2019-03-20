@@ -25,7 +25,7 @@ module.exports = {
         node: true
     },
     // 继承第三方校验规则eslint-config-airbnb
-    extends: "airbnb",
+    // extends: "airbnb",
     // eslint-config-airbnb包括了以下3个插件
     plugins: ["react", "jsx-a11y", "import"],
     // 定制自己的规则
