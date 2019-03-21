@@ -7,6 +7,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const ROOT_PATH = path.resolve(__dirname, '..');
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
 const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
@@ -35,9 +36,7 @@ module.exports = {
             context: ROOT_PATH
         }),
         new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: '[name].css',
+            filename: 'css/[name].css',
             chunkFilename: '[id].css'
         }),
         new HtmlwebpackPlugin({
@@ -47,6 +46,21 @@ module.exports = {
         }),
         new webpack.ProvidePlugin({
             $: 'jquery'
-        })
-    ]
+        }),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+        new LodashModuleReplacementPlugin()
+    ],
+    optimization: {
+        splitChunks: {
+            chunks: 'async',
+            cacheGroups: {
+                vendor: {
+                    test: /[\\\/]node_modules[\\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        },
+        runtimeChunk: true
+    }
 };
