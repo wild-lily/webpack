@@ -1,0 +1,18 @@
+@import '../../style/global.css';
+.success-btn {
+    background: #27ae60;
+}
+
+.danger-btn {
+    background: #dd4a3a;
+}
+
+.success-btn,
+.danger-btn 
+span {
+    color: #fff;
+}
+
+.default-btn {
+    background: #fff;
+}

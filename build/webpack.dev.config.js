@@ -33,7 +33,8 @@ const devConfig = merge(baseConfig, {
                 headers: {
                     Cookie: ''
                 }
-            }
+            },
+            '/detail': ''
         },
         before(app) {
             apiMocker(app, path.resolve(ROOT_PATH, 'mock', 'mock.js'));

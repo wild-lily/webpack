@@ -29,3 +29,4 @@ npm run build
 - dll 支持
 - mock api 支持
 - eslint
+- 快速创建组件

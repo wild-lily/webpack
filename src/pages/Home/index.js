@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import State from './state';
 import style from './style.less';
-
+import Button from '../../components/Button/index';
 @observer
-class App extends Component {
+class Home extends Component {
     local = {
         state: new State()
     };
@@ -12,14 +12,12 @@ class App extends Component {
         return (
             <div className={style.box}>
                 <h1>{this.local.state.getHeader}</h1>
-                <button onClick={() => {
+                <Button type='success' onClick={() => {
                     this.local.state.setTitle();
-                }}>
-                    change
-                </button>
-            </div>
+                }} word='success'></Button>
+            </div >
         );
     }
 }
 
-export default App;
+export default Home;
