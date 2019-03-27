@@ -1,14 +1,25 @@
 {
     "name": "react-webpack-demo",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "changelog": "cp package.json _package.json &&preset=`conventional-commits-detector` && echo $preset && bump=`conventional-recommended-bump -p angular` && echo ${1:-$bump} && npm --no-git-tag-version version ${1:-$bump} &>/dev/null && conventional-changelog -i CHANGELOG.md -s -p ${2:-$preset} && git add CHANGELOG.md package.json package-lock.json && version=`cat package.json` && git commit -m'docs(CHANGELOG): $version' && mv -f _package.json package.json && npm version ${1:-$bump} -m 'chore(release): %s' && git push --follow-tags ",
+        "commit": "git add . && git-cz",
+        "release": "standard-version",
         "eslint": "eslint --ext .js src",
         "dll": "rm -rf dist && webpack --config build/dll.webpack.dev.config.js --mode development",
         "dev": "webpack-dev-server --open --hot --config build/webpack.dev.config.js --mode development",
         "build": "rm -rf dist && webpack --config build/dll.webpack.prod.config.js && webpack --config build/webpack.prod.config.js --mode production"
+    },
+    "config": {
+        "commitizen": {
+            "path": "node_modules/cz-conventional-changelog"
+        }
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -e $GIT_PARAMS"
+        }
     },
     "keywords": [],
     "author": "zhangfuling",
@@ -24,15 +35,13 @@
         "@babel/preset-stage-2": "^7.0.0",
         "@babel/runtime": "^7.3.4",
         "@babel/runtime-corejs2": "^7.3.4",
+        "@commitlint/cli": "^7.5.2",
+        "@commitlint/config-conventional": "^7.5.0",
         "babel-eslint": "^10.0.1",
         "babel-loader": "^8.0.5",
         "babel-preset-mobx": "^2.0.0",
         "classnames": "^2.2.6",
         "commitizen": "^3.0.7",
-        "conventional-changelog": "^3.0.6",
-        "conventional-changelog-cli": "^2.0.12",
-        "conventional-commits-detector": "^1.0.2",
-        "conventional-recommended-bump": "^4.0.4",
         "css-loader": "^2.1.1",
         "cz-conventional-changelog": "^2.1.0",
         "eslint": "^5.15.2",
@@ -52,7 +61,6 @@
         "mobx-react": "^5.4.3",
         "mocker-api": "^1.6.7",
         "postcss-loader": "^3.0.0",
-        "pre-commit": "^1.2.2",
         "prop-types": "^15.7.2",
         "react-component-maker": "^1.5.0",
         "style-loader": "^0.23.1",
@@ -71,6 +79,7 @@
         "react": "^16.8.4",
         "react-dom": "^16.8.4",
         "react-hot-loader": "^4.8.0",
-        "react-router-dom": "^5.0.0"
+        "react-router-dom": "^5.0.0",
+        "standard-version": "^5.0.2"
     }
 }
