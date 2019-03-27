@@ -7,21 +7,28 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.config.js');
 const ROOT_PATH = path.resolve(__dirname, '..');
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
-
+const chalk = require('chalk');
 const prodConfig = merge(baseConfig, {
     mode: 'production',
     module: {
         rules: require('./loaders.prod')
     },
+    devtool: 'source-map',
     plugins: [
+        new webpack.DefinePlugin({
+            // 定义全局变量
+            'process.env': {
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+            }
+        }),
         new HtmlwebpackPlugin({
-            title: 'react-webpack-demo',
-            filename: 'index.html',
-            template: path.resolve(SRC_PATH, 'templates', 'index.html'),
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
@@ -30,7 +37,22 @@ const prodConfig = merge(baseConfig, {
                 removeStyleLinkTypeAttributes: true,
                 removeAttributeQuotes: true
             }
-        })
+        }),
+        new OptimizeCSSPlugin({
+            cssProcessorOptions: {
+                safe: true
+            }
+        }),
+        new CopyWebpackPlugin([{
+            from: path.resolve(SRC_PATH, 'assets'),
+            to: './assets',
+            ignore: ['.*']
+        }]),
+        new ProgressBarPlugin(
+            {
+                format: 'build[:bar]' + chalk.green.bold(':percent') + ' (:elapsed seconds)'
+            }
+        )
     ],
     optimization: {
         minimizer: [new UglifyJsPlugin({

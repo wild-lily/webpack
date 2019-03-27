@@ -1,26 +1,63 @@
-var WebpackDevServer = require('webpack-dev-server')
-var _ = require('underscore-contrib')
-var config = require('../build/webpack.dev.config')
-var webpack = require('webpack')
-_.map(config.entry, function(value, key) {
-    config.entry[key] = [
-        'webpack-dev-server/client?http://127.0.0.1:8080/',
-        'webpack/hot/dev-server',
-        value
-    ];
-})
-config.output.publicPath = 'http://localhost:8080/dist'
-config.plugins = (config.plugins || []).concat([
-    new webpack.HotModuleReplacementPlugin()
-])
-var compiler = webpack(config)
-var server = new WebpackDevServer(compiler, {
-    hot: true,
-    noInfo: true,
-    filename: config.output.filename,
+/**
+ * @file vendor.dll.js
+ * @author server.dev.js
+ */
+
+const webpack = require('webpack')
+const path = require('path')
+const express = require('express')
+const http = require('http')
+const proxyMiddleware = require('http-proxy-middleware')
+// 粉笔
+const chalk = require('chalk')
+
+const config = require('../build/webpack.dev.config.js')
+const proxyTable = require('./proxyTable')
+
+const app = express()
+const compiler = webpack(config)
+
+
+const port = process.env.PORT || 8080
+
+const devMiddleware = require('webpack-dev-middleware')(compiler, {
     publicPath: config.output.publicPath,
-    stats: {colors: true}
+    stats: {
+        colors: true,
+        modules: false,
+        children: false,
+        chunks: false,
+        chunkModules: false
+    }
 })
-server.listen(8080, '127.0.0.1', function() {
-    console.log('Listening at http://127.0.0.1:8080')
+
+const hotMiddleware = require('webpack-hot-middleware')(compiler)
+compiler.plugin('compilation', function(compilation) {
+    compilation.plugin('html-webpack-plugin-after-emit', function(data, cb) {
+        hotMiddleware.publish({action: 'reload'})
+        cb()
+    })
+})
+
+// proxy api requests
+Object.keys(proxyTable).forEach(function(context) {
+    var options = proxyTable[context]
+    if (typeof options === 'string') {
+        options = {target: options}
+    }
+    app.use(proxyMiddleware(context, options))
+})
+
+app.use(devMiddleware)
+
+app.use(hotMiddleware)
+
+app.use(express.static(__dirname + config.output.publicPath))
+
+const server = http.createServer(app)
+server.listen(port, 'localhost', function(err) {
+    if (err) throw err
+    // server.keepAliveTimeout = 0 //node版本号低于8.1.1  由于超时，node kill掉请求。通过设置keepalivetimeout解决超时热更新失效
+    const addr = server.address()
+    console.log('Listening at http://%s:%d', addr.address, addr.port)
 })

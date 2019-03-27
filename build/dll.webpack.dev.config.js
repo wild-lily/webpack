@@ -11,7 +11,7 @@ const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 const vendors = [
     'react',
     'react-dom',
-    'react-router',
+    'react-router-dom',
     'mobx',
     'mobx-react'
 ];

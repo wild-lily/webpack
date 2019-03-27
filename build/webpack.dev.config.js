@@ -11,10 +11,14 @@ const baseConfig = require('./webpack.base.config.js');
 const ROOT_PATH = path.resolve(__dirname, '..');
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
 const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
+// webpack hot reload 配置
+// Object.keys(baseConfig.entry).forEach(function(name) {
+//     baseConfig.entry[name] = ['webpack-hot-middleware/client?noInfo=true&reload=true'].concat(baseConfig.entry[name])
+// })
 
 const devConfig = merge(baseConfig, {
     mode: 'development',
-    devtool: 'eval-source-map',
+    devtool: "cheap-module-eval-source-map",
     module: {
         rules: require('./loaders.dev')
     },
@@ -40,7 +44,11 @@ const devConfig = merge(baseConfig, {
         }
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': {NODE_ENV: '"development"'},
+            'DEV': true
+        })
     ]
 });
 
