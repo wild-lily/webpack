@@ -18,7 +18,7 @@ npm run dll
 4. 启动环境
 ```
 # 启动开发环境
-npm run dll
+npm run dev
 # 构建生成环境资源
 npm run build
 ```
