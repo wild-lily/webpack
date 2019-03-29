@@ -1,8 +1,3 @@
-/**
- * @file vendor.dll.js
- * @author server.dev.js
- */
-
 const webpack = require('webpack')
 const path = require('path')
 const express = require('express')
@@ -11,14 +6,14 @@ const proxyMiddleware = require('http-proxy-middleware')
 // 粉笔
 const chalk = require('chalk')
 
-const config = require('../build/webpack.dev.config.js')
+const config = require('../webpack/webpack.dev.config')
 const proxyTable = require('./proxyTable')
 
 const app = express()
 const compiler = webpack(config)
 
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 3000
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
     publicPath: config.output.publicPath,
@@ -32,12 +27,17 @@ const devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 const hotMiddleware = require('webpack-hot-middleware')(compiler)
-compiler.plugin('compilation', function(compilation) {
-    compilation.plugin('html-webpack-plugin-after-emit', function(data, cb) {
-        hotMiddleware.publish({action: 'reload'})
-        cb()
-    })
-})
+// compiler.plugin('compilation', function (compilation) {
+//   compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
+//     hotMiddleware.publish({ action: 'reload' })
+//     cb()
+//   })
+// })
+compiler.hooks.compilation.tap('html-webpack-plugin-after-emit', () => {
+    hotMiddleware.publish({
+        action: 'reload'
+    });
+});
 
 // proxy api requests
 Object.keys(proxyTable).forEach(function(context) {
@@ -52,6 +52,8 @@ app.use(devMiddleware)
 
 app.use(hotMiddleware)
 
+// const staticPath = path.posix.join('/', 'static')
+// app.use(staticPath, express.static('./static'))
 app.use(express.static(__dirname + config.output.publicPath))
 
 const server = http.createServer(app)

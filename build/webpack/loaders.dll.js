@@ -1,13 +1,12 @@
 /**
- * @file loaders.dev.js
+ * @file loaders.dll.js
  * @author zhangfuling
  */
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ROOT_PATH = path.resolve(__dirname, '..');
+const ROOT_PATH = path.resolve(__dirname, '../../');
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
-const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 
 module.exports = [
     {
@@ -18,11 +17,7 @@ module.exports = [
         exclude: /node_modules/
     },
     {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
-    },
-    {
-        test: /\.less$/,
+        test: /\.(sa|sc|c|le)ss$/,
         use: [
             {
                 loader: 'style-loader'
@@ -37,6 +32,12 @@ module.exports = [
             },
             {
                 loader: 'less-loader'
+            },
+            {
+                loader: 'postcss-loader'
+            },
+            {
+                loader: 'sass-loader'
             }
         ]
     },

@@ -1,35 +1,29 @@
-/**
- * @file webpack.base.config.js
- * @author zhangfuling
- */
-
-const path = require('path');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlwebpackPlugin = require('html-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-const ROOT_PATH = path.resolve(__dirname, '..');
-const SRC_PATH = path.resolve(ROOT_PATH, 'src');
-const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
-const NODE_BUILD = process.env.NODE_BUILD || '';
-const templateList = require('./templateList');
-
-let entry = {};
+const webpack = require('webpack')
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const templateList = require('./templateList')
+const ROOT_PATH = path.resolve(__dirname, '../../');
+const SRC_PATH = path.resolve(ROOT_PATH, 'src')
+const DIST_PATH = path.resolve(ROOT_PATH, 'dist')
+const NODE_BUILD = process.env.NODE_BUILD || ''
+let entry = {
+    common: [
+        './src/styles/index.css'
+    ]
+}
 let plugins = [
     new webpack.DllReferencePlugin({
         manifest: require(path.resolve(DIST_PATH, 'lib', 'manifest.json')),
         context: ROOT_PATH
-    }),
-    new MiniCssExtractPlugin({
-        filename: '[contenthash].css',
-        chunkFilename: '[contenthash].css'
     }),
     new webpack.ProvidePlugin({
         $: 'jquery'
     }),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
     new LodashModuleReplacementPlugin()
-];
+]
+
 
 // 构建模板
 if (NODE_BUILD) {
@@ -39,7 +33,7 @@ if (NODE_BUILD) {
     }
     const ITEM = templateList[NODE_BUILD]
     entry[NODE_BUILD] = ITEM.entry
-    plugins.push(new HtmlwebpackPlugin({
+    plugins.push(new HtmlWebpackPlugin({
         filename: ITEM.filename,
         template: ITEM.template,
         inject: true,
@@ -49,7 +43,7 @@ if (NODE_BUILD) {
     for (let item in templateList) {
         const ITEM = templateList[item]
         entry[item] = ITEM.entry
-        plugins.push(new HtmlwebpackPlugin({
+        plugins.push(new HtmlWebpackPlugin({
             filename: ITEM.filename,
             template: ITEM.template,
             inject: true,
@@ -61,9 +55,9 @@ if (NODE_BUILD) {
 module.exports = {
     entry,
     output: {
+        // path: path.resolve(__dirname, '/dist'),
         path: DIST_PATH,
-        filename: 'js/[name].[hash:5].js',
-        publicPath: ''
+        filename: 'js/[name].[hash:5].js'
     },
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.scss', '.css', '.less'],
@@ -71,21 +65,13 @@ module.exports = {
             'react-dom': '@hot-loader/react-dom'
         }
     },
-    module: {
-        rules: null
-    },
-    plugins,
     optimization: {
         splitChunks: {
-            chunks: 'async',
-            cacheGroups: {
-                vendor: {
-                    test: /[\\\/]node_modules[\\\/]/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        },
-        runtimeChunk: true
+            name: 'common'
+        }
+    },
+    plugins,
+    module: {
+        rules: null
     }
-};
+}

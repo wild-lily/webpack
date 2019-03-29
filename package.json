@@ -2,14 +2,12 @@
     "name": "react-webpack-demo",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
-        "eslint": "eslint --ext .js src",
-        "dll": "rm -rf dist && webpack --config build/dll.webpack.dev.config.js --mode development",
-        "dev": "webpack-dev-server --open --config build/webpack.dev.config.js --mode development",
-        "build": "rm -rf dist && webpack --config build/dll.webpack.prod.config.js && webpack --config build/webpack.prod.config.js --mode production"
+        "dll:dev": "rm -rf dist && NODE_ENV=development && node ./build/server/vendor.dll.dev.js",
+        "dll:prod": "rm -rf dist && NODE_ENV=production && node ./build/server/vendor.dll.prod.js",
+        "build": "npm run dll:prod && export NODE_ENV=production && node ./build/webpack/webpack.prod.config.js",
+        "dev": "export NODE_BUILD=&&node ./build/server/dev-server"
     },
-    "keywords": [],
     "author": "zhangfuling",
     "license": "ISC",
     "devDependencies": {
@@ -23,6 +21,7 @@
         "@babel/preset-stage-2": "^7.0.0",
         "@babel/runtime": "^7.3.4",
         "@babel/runtime-corejs2": "^7.3.4",
+        "autoprefixer": "^9.5.0",
         "babel-eslint": "^10.0.1",
         "babel-loader": "^8.0.5",
         "babel-preset-mobx": "^2.0.0",
@@ -48,10 +47,14 @@
         "mobx": "^5.9.0",
         "mobx-react": "^5.4.3",
         "mocker-api": "^1.6.7",
+        "node-sass": "^4.11.0",
         "optimize-css-assets-webpack-plugin": "^5.0.1",
+        "ora": "^3.2.0",
         "postcss-loader": "^3.0.0",
         "progress-bar-webpack-plugin": "^1.12.1",
         "react-component-maker": "^1.5.0",
+        "sass-loader": "^7.1.0",
+        "shelljs": "^0.8.3",
         "style-loader": "^0.23.1",
         "uglifyjs-webpack-plugin": "^2.1.2",
         "url-loader": "^1.1.2",
@@ -60,7 +63,8 @@
         "webpack-dev-middleware": "^3.6.1",
         "webpack-dev-server": "^3.2.1",
         "webpack-hot-middleware": "^2.24.3",
-        "webpack-merge": "^4.2.1"
+        "webpack-merge": "^4.2.1",
+        "webpack-notifier": "^1.7.0"
     },
     "dependencies": {
         "@hot-loader/react-dom": "^16.8.5",
